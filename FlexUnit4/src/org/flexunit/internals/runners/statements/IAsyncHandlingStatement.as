@@ -61,7 +61,7 @@ package org.flexunit.internals.runners.statements
 		 * 
 		 * @return an event handler Function that will determine whether the <code>timeout</code> has been reached.
 		 */
-		function asyncHandler( eventHandler:Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):Function; 
+		function asyncHandler( eventHandler:Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null, timeoutWaitsForFrames:Boolean=true ):Function; 
 		function asyncErrorConditionHandler( eventHandler:Function ):Function;
 		
 		// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
@@ -83,7 +83,7 @@ package org.flexunit.internals.runners.statements
 		 * @return an <code>IResponder</code> that will determine whether the <code>timeout</code> has been reached.
 		 */
 		CONFIG::useFlexClasses {
-		function asyncResponder( responder:*, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):IResponder;
+		function asyncResponder( responder:*, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null, timeoutWaitsForFrames:Boolean=true ):IResponder;
 		}
 		
 		/**
@@ -103,7 +103,7 @@ package org.flexunit.internals.runners.statements
 		 * 
 		 * @return a <code>Responder</code> that will determine whether the <code>timeout</code> has been reached.
 		 */
-		function asyncNativeResponder( resultHandler : Function, faultHandler : Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):Responder;
+		function asyncNativeResponder( resultHandler : Function, faultHandler : Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null, timeoutWaitsForFrames:Boolean=true ):Responder;
 		
 		// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
 		// be compiled into the FlexUnit swc.  For actionscript only projects we do not want to compile the

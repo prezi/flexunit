@@ -67,11 +67,11 @@ package org.flexunit.async
 		 * @param timeoutHandler The function that will be executed if the <code>target</code> does not 
 		 * receive expected <code>eventName</code> before the <code>timeout</code> time is reached.
 		 */
-		public static function proceedOnEvent( testCase:Object, target:IEventDispatcher, eventName:String, timeout:int=500, timeoutHandler:Function = null ):void {
+		public static function proceedOnEvent( testCase:Object, target:IEventDispatcher, eventName:String, timeout:int=500, timeoutHandler:Function = null, timeoutWaitsForFrames:Boolean = true ):void {
 			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
 			var handler:Function;
 
-			handler = asyncHandlingStatement.asyncHandler( asyncHandlingStatement.pendUntilComplete, timeout, null, timeoutHandler );
+			handler = asyncHandlingStatement.asyncHandler( asyncHandlingStatement.pendUntilComplete, timeout, null, timeoutHandler, timeoutWaitsForFrames );
 			target.addEventListener( eventName, handler, false, 0, true );  
 		} 
 		
@@ -91,11 +91,11 @@ package org.flexunit.async
 		 * @param timeoutHandler The function that will be executed if the <code>target</code> does not 
 		 * receive expected <code>eventName</code> before the <code>timeout</code> time is reached.
 		 */
-		public static function failOnEvent( testCase:Object, target:IEventDispatcher, eventName:String, timeout:int=500, timeoutHandler:Function = null ):void {
+		public static function failOnEvent( testCase:Object, target:IEventDispatcher, eventName:String, timeout:int=500, timeoutHandler:Function = null, timeoutWaitsForFrames:Boolean = true ):void {
 			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
 			var handler:Function;
 			
-			handler = asyncHandlingStatement.asyncHandler( asyncHandlingStatement.failOnComplete, timeout, null, asyncHandlingStatement.pendUntilComplete );
+			handler = asyncHandlingStatement.asyncHandler( asyncHandlingStatement.failOnComplete, timeout, null, asyncHandlingStatement.pendUntilComplete, timeoutWaitsForFrames );
 			target.addEventListener( eventName, handler, false, 0, true );  
 		}
 		
@@ -148,11 +148,11 @@ package org.flexunit.async
 		 * @param timeoutHandler The function that will be executed if the <code>target</code> does not 
 		 * receive expected <code>eventName</code> before the <code>timeout</code> time is reached.
 		 */
-		public static function handleEvent( testCase:Object, target:IEventDispatcher, eventName:String, eventHandler:Function, timeout:int=500, passThroughData:Object = null, timeoutHandler:Function = null ):void {
+		public static function handleEvent( testCase:Object, target:IEventDispatcher, eventName:String, eventHandler:Function, timeout:int=500, passThroughData:Object = null, timeoutHandler:Function = null, timeoutWaitsForFrames:Boolean = true ):void {
 			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
 			var handler:Function;
                    
-			handler = asyncHandlingStatement.asyncHandler( eventHandler, timeout, passThroughData, timeoutHandler );
+			handler = asyncHandlingStatement.asyncHandler( eventHandler, timeout, passThroughData, timeoutHandler, timeoutWaitsForFrames );
 			target.addEventListener( eventName, handler, false, 0, true );  
 		} 
 		
@@ -168,10 +168,10 @@ package org.flexunit.async
 		 * available to both the <code>eventHandler</code> and <code>timeoutHandler</code>.
 		 * @param timeoutHandler The function that will be executed if the <code>timeout</code> period is reached.
 		 */
-		public static function asyncHandler( testCase:Object, eventHandler:Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):Function {
+		public static function asyncHandler( testCase:Object, eventHandler:Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null, timeoutWaitsForFrames:Boolean = true ):Function {
 			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
 						
-			return asyncHandlingStatement.asyncHandler( eventHandler, timeout, passThroughData, timeoutHandler );
+			return asyncHandlingStatement.asyncHandler( eventHandler, timeout, passThroughData, timeoutHandler, timeoutWaitsForFrames );
 		}
 		
 		// We have a toggle in the compiler arguments so that we can choose whether or not the flex classes should
@@ -191,10 +191,10 @@ package org.flexunit.async
 		CONFIG::useFlexClasses {
 		import mx.rpc.IResponder;
 		
-		public static function asyncResponder( testCase:Object, responder:*, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):IResponder {
+		public static function asyncResponder( testCase:Object, responder:*, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null, timeoutWaitsForFrames:Boolean = true ):IResponder {
 			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
 			
-			return asyncHandlingStatement.asyncResponder( responder, timeout, passThroughData, timeoutHandler );
+			return asyncHandlingStatement.asyncResponder( responder, timeout, passThroughData, timeoutHandler, timeoutWaitsForFrames );
 		}
 		}
 		/**
@@ -209,10 +209,10 @@ package org.flexunit.async
 		 * available to both the <code>eventHandler</code> and <code>timeoutHandler</code>.
 		 * @param timeoutHandler The function that will be executed if the <code>timeout</code> period is reached.
 		 */
-		public static function asyncNativeResponder( testCase:Object, resultHandler : Function, faultHandler : Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ) : Responder {
+		public static function asyncNativeResponder( testCase:Object, resultHandler : Function, faultHandler : Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null, timeoutWaitsForFrames:Boolean = true ) : Responder {
 			var asyncHandlingStatement:IAsyncHandlingStatement = AsyncLocator.getCallableForTest( testCase );
 			
-			return asyncHandlingStatement.asyncNativeResponder( resultHandler, faultHandler, timeout, passThroughData, timeoutHandler );
+			return asyncHandlingStatement.asyncNativeResponder( resultHandler, faultHandler, timeout, passThroughData, timeoutHandler, timeoutWaitsForFrames );
 		}
 		
 		/**

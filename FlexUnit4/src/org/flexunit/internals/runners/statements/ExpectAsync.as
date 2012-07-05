@@ -210,12 +210,12 @@ package org.flexunit.internals.runners.statements {
 		 * 
 		 * @return an event handler Function that will determine whether the <code>timeout</code> has been reached.
 		 */
-		public function asyncHandler( eventHandler:Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):Function { 
+		public function asyncHandler( eventHandler:Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null, timeoutWaitsForFrames:Boolean = true ):Function { 
 			if ( testComplete ) {
 				sendComplete( new Error("Test Completed, but additional async event added") );
 			}
 
-			var asyncHandler:AsyncHandler = new AsyncHandler( eventHandler, timeout, passThroughData, timeoutHandler )
+			var asyncHandler:AsyncHandler = new AsyncHandler( eventHandler, timeout, passThroughData, timeoutHandler, timeoutWaitsForFrames );
 			asyncHandler.addEventListener( AsyncHandler.EVENT_FIRED, handleAsyncEventFired, false, 0, true );
 			asyncHandler.addEventListener( AsyncHandler.TIMER_EXPIRED, handleAsyncTimeOut, false, 0, true );
 
@@ -243,7 +243,7 @@ package org.flexunit.internals.runners.statements {
 		 * @return an <code>IResponder</code> that will determine whether the <code>timeout</code> has been reached.
 		 */
 		CONFIG::useFlexClasses
-		public function asyncResponder( responder:*, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):IResponder { 
+		public function asyncResponder( responder:*, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null, timeoutWaitsForFrames:Boolean = true ):IResponder { 
 
 			var asyncResponder:IAsyncTestResponder;
 
@@ -270,7 +270,7 @@ package org.flexunit.internals.runners.statements {
 				asyncResponder = new AsyncTestResponder( responder );
 			}
 
-			var asyncHandler:AsyncHandler = new AsyncHandler( handleAsyncTestResponderEvent, timeout, passThroughData, timeoutHandler )
+			var asyncHandler:AsyncHandler = new AsyncHandler( handleAsyncTestResponderEvent, timeout, passThroughData, timeoutHandler, timeoutWaitsForFrames );
 			asyncHandler.addEventListener( AsyncHandler.EVENT_FIRED, handleAsyncEventFired, false, 0, true );
 			asyncHandler.addEventListener( AsyncHandler.TIMER_EXPIRED, handleAsyncTimeOut, false, 0, true );
 
@@ -467,13 +467,13 @@ package org.flexunit.internals.runners.statements {
 		 * 
 		 * @return an <code>IResponder</code> that will determine whether the <code>timeout</code> has been reached.
 		 */
-		public function asyncNativeResponder( resultHandler : Function, faultHandler : Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):Responder { 
+		public function asyncNativeResponder( resultHandler : Function, faultHandler : Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null, timeoutWaitsForFrames:Boolean = true ):Responder { 
 			
 			var asyncResponder:AsyncNativeTestResponder;
 			
 			asyncResponder = new AsyncNativeTestResponder( resultHandler, faultHandler );
 			
-			var asyncHandler:AsyncHandler = new AsyncHandler( handleAsyncNativeTestResponderEvent, timeout, passThroughData, timeoutHandler )
+			var asyncHandler:AsyncHandler = new AsyncHandler( handleAsyncNativeTestResponderEvent, timeout, passThroughData, timeoutHandler, timeoutWaitsForFrames )
 			asyncHandler.addEventListener( AsyncHandler.EVENT_FIRED, handleAsyncEventFired, false, 0, true );
 			asyncHandler.addEventListener( AsyncHandler.TIMER_EXPIRED, handleAsyncTimeOut, false, 0, true );
 			
