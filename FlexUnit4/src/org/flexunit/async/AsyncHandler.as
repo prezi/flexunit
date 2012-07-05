@@ -81,7 +81,7 @@ package org.flexunit.async {
 		 * TestCase.asyncHandler() method fires before the timeout specified in 
 		 * the constructor.
 		 */
-		protected var timer:Timer; 
+		protected var timer:FrameTimer;
 
 		/** 
          * @private
@@ -192,7 +192,7 @@ package org.flexunit.async {
 		 * 
 		 * @param timeoutHandler A method to call if the timeout occurs before the event.
 		 */
-		public function AsyncHandler( eventHandler:Function, timeout:int=0, passThroughData:Object = null, timeoutHandler:Function = null ) {
+		public function AsyncHandler( eventHandler:Function, timeout:int=0, passThroughData:Object = null, timeoutHandler:Function = null, timeoutWaitsForFrames:Boolean = true ) {
 
 			this.eventHandler = eventHandler;
 			this.timeout = timeout;
@@ -200,7 +200,7 @@ package org.flexunit.async {
 			this.timeoutHandler = timeoutHandler; 
 			
 			if ( timeout ) {				
-				timer = new Timer( timeout, 1 );
+				timer = new FrameTimer( timeout , timeoutWaitsForFrames );
 				timer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimeout );
 				timerState = TIMER_NOT_STARTED;
 
@@ -208,6 +208,88 @@ package org.flexunit.async {
 				//however, we will still accept an asynchronous event ahead of time
 				//timer.start();
 			}
+		}
+	}
+}
+
+import flash.events.EventDispatcher;
+import flash.events.Event;
+import flash.events.TimerEvent;
+import flash.display.Shape;
+import flash.utils.getTimer;
+
+class FrameTimer extends EventDispatcher
+{
+	private var frameDelay:int;
+	private var msDelay:Number;
+
+	private var _shape:Shape;
+
+	private var running:Boolean = false;
+	private var frameCount:int = 0;
+	private var timeStarted:int = 0;
+
+	public function FrameTimer(delay:Number, waitForThirtyFps:Boolean = true)
+	{
+		_shape = new Shape();
+		msDelay = delay;
+
+		if (waitForThirtyFps)
+		{
+			frameDelay = Math.ceil(delay / 30.);
+		}
+		else
+		{
+			frameDelay = 0;
+		}
+
+		trace("FrameTimer: created");
+	}
+
+	public function start():void
+	{
+		timeStarted = getTimer();
+		frameCount = 0;
+		
+		trace("FrameTimer: start");
+
+		if (!running)
+		{
+			_shape.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
+			running = true;
+		}
+	}
+
+	public function stop():void
+	{
+		if (!running)
+		{
+			return;
+		}
+
+		trace("FrameTimer: stop (elapsed: " + (getTimer() - timeStarted) + ")");
+
+		running = false;
+		_shape.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
+	}
+
+	private function handleEnterFrame(e:Event):void
+	{
+		if (!running)
+		{
+			_shape.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
+			return;
+		}
+
+		var timeElapsed:int = getTimer() - timeStarted;
+		frameCount += 1;
+
+		trace("FrameTimer: frame " + frameCount + ", elapsed: " + timeElapsed + ", delay: " + msDelay);
+
+		if (frameCount >= frameDelay && timeElapsed >= msDelay)
+		{
+			trace("FrameTimer: complete (elapsed: " + timeElapsed + ")");
+			dispatchEvent(new TimerEvent(TimerEvent.TIMER_COMPLETE));
 		}
 	}
 }
