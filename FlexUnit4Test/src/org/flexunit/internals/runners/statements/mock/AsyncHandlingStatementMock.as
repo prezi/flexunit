@@ -19,11 +19,11 @@ package org.flexunit.internals.runners.statements.mock
 			return mock.bodyExecuting;
 		}
 		
-		public function asyncNativeResponder( resultHandler : Function, faultHandler : Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null ):Responder {
+		public function asyncNativeResponder( resultHandler : Function, faultHandler : Function, timeout:int, passThroughData:Object = null, timeoutHandler:Function = null, timeoutWaitsForFrames:Boolean = true ):Responder {
 			return mock.asyncNativeResponder( resultHandler, faultHandler, timeout, passThroughData, timeoutHandler ) as Responder;
 		}
 		
-		public function asyncHandler(eventHandler:Function, timeout:int, passThroughData:Object=null, timeoutHandler:Function=null):Function
+		public function asyncHandler(eventHandler:Function, timeout:int, passThroughData:Object=null, timeoutHandler:Function=null, timeoutWaitsForFrames:Boolean = true):Function
 		{
 			return mock.asyncHandler(eventHandler, timeout, passThroughData, timeoutHandler);
 		}
@@ -34,7 +34,7 @@ package org.flexunit.internals.runners.statements.mock
 		} 
 		
 		CONFIG::useFlexClasses
-		public function asyncResponder(responder:*, timeout:int, passThroughData:Object=null, timeoutHandler:Function=null):IResponder
+		public function asyncResponder(responder:*, timeout:int, passThroughData:Object=null, timeoutHandler:Function=null, timeoutWaitsForFrames:Boolean = true):IResponder
 		{
 			return mock.asyncResponder(responder, timeout, passThroughData, timeoutHandler);
 		}
