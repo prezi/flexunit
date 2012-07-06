@@ -30,8 +30,6 @@ package org.flexunit {
 			{
 				frameDelay = 0;
 			}
-
-			trace("FrameTimer: created");
 		}
 
 		public function start():void
@@ -39,8 +37,6 @@ package org.flexunit {
 			timeStarted = getTimer();
 			frameCount = 0;
 			
-			trace("FrameTimer: start");
-
 			if (!_running)
 			{
 				_shape.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
@@ -54,8 +50,6 @@ package org.flexunit {
 			{
 				return;
 			}
-
-			trace("FrameTimer: stop (elapsed: " + (getTimer() - timeStarted) + ")");
 
 			_running = false;
 			_shape.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
@@ -77,11 +71,8 @@ package org.flexunit {
 			var timeElapsed:int = getTimer() - timeStarted;
 			frameCount += 1;
 
-			trace("FrameTimer: frame " + frameCount + ", elapsed: " + timeElapsed + ", delay: " + msDelay);
-
 			if (frameCount >= frameDelay && timeElapsed >= msDelay)
 			{
-				trace("FrameTimer: complete (elapsed: " + timeElapsed + ")");
 				dispatchEvent(new TimerEvent(TimerEvent.TIMER_COMPLETE));
 			}
 		}
