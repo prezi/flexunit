@@ -230,7 +230,7 @@ package org.flexunit.async
 			handler = asyncHandlingStatement.asyncHandler( function(event:TimerEvent, object:Object):void
 			{
 				callback();
-			}, delay + 100.0);
+			}, delay + 100.0, null, null, false);
 			
 			timer.addEventListener( TimerEvent.TIMER_COMPLETE, handler, false, 0, true );
 			timer.start();
