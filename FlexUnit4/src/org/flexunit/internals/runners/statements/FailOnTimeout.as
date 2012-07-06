@@ -27,7 +27,6 @@
  **/ 
 package org.flexunit.internals.runners.statements {
 	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	
 	import org.flexunit.constants.AnnotationArgumentConstants;
 	import org.flexunit.constants.AnnotationConstants;
@@ -37,6 +36,7 @@ package org.flexunit.internals.runners.statements {
 	import org.flexunit.token.AsyncTestToken;
 	import org.flexunit.token.ChildResult;
 	import org.flexunit.utils.ClassNameUtil;
+	import org.flexunit.FrameTimer;
 	
 	/**
 	 * The <code>FailOnTimeout</code> is a decorator that is responsible for determing 
@@ -67,7 +67,7 @@ package org.flexunit.internals.runners.statements {
 		/**
 		 * @private
 		 */
-		private var timer:Timer;
+		private var timer:FrameTimer;
 		/**
 		 * @private
 		 */
@@ -91,7 +91,7 @@ package org.flexunit.internals.runners.statements {
 			myToken = new AsyncTestToken( ClassNameUtil.getLoggerFriendlyClassName( this ) );
 			myToken.addNotificationMethod( handleNextExecuteComplete );
 			
-			timer = new Timer( timeout, 1 );
+			timer = new FrameTimer( timeout );
 			timer.addEventListener( TimerEvent.TIMER_COMPLETE, handleTimerComplete, false, 0, true );
 		}
 		

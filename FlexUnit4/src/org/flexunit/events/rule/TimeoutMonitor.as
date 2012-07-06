@@ -2,12 +2,13 @@ package org.flexunit.events.rule {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	import flash.utils.getTimer;
+
+	import org.flexunit.FrameTimer;
 
 	[Event(name="timeOutExpired")]
 	public class TimeoutMonitor extends EventDispatcher {
-		private var timer:Timer;
+		private var timer:FrameTimer;
 		private var timeOut:Number = 0;
 		private var startTime:Number = 0;
 		private var _expired:Boolean = false;
@@ -56,7 +57,7 @@ package org.flexunit.events.rule {
 
 		public function TimeoutMonitor( timeOut:Number ) {
 			this.timeOut = timeOut;
-			timer = new Timer( timeOut, 1 );
+			timer = new FrameTimer( timeOut );
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimeOut );
 		}
 	}

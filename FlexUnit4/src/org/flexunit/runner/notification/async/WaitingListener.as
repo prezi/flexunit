@@ -41,12 +41,12 @@ package org.flexunit.runner.notification.async
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	
 	import org.flexunit.runner.IDescription;
 	import org.flexunit.runner.Result;
 	import org.flexunit.runner.notification.Failure;
 	import org.flexunit.runner.notification.IAsyncStartupRunListener;
+	import org.flexunit.FrameTimer;
 
 	/**
 	 * This class is simply to test async startup listeners
@@ -67,7 +67,7 @@ package org.flexunit.runner.notification.async
 		 * Constructor.
 		 */
 		public function WaitingListener() {
-			var timer:Timer = new Timer( 5000, 1 );
+			var timer:FrameTimer = new FrameTimer( 5000 );
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete, false, 0, true );
 			timer.start();
 		}
