@@ -28,6 +28,7 @@
 package org.flexunit.runners {
 	import org.flexunit.constants.AnnotationConstants;
 	import org.flexunit.internals.AssumptionViolatedException;
+	import org.flexunit.internals.builders.IgnoredClassRunner;
 	import org.flexunit.internals.namespaces.classInternal;
 	import org.flexunit.internals.runners.ChildRunnerSequencer;
 	import org.flexunit.internals.runners.ErrorReportingRunner;
@@ -565,9 +566,8 @@ package org.flexunit.runners {
 					}
 					
 
-					//If we don't have any remaining tests, then make this an error reporting runner
-					children[ i ] = new ErrorReportingRunner( klass, 
-						new Error( "No tests found matching " + child.description.displayName ) );
+					//If we don't have any remaining tests, then make this an ignore runner
+					children[ i ] = new IgnoredClassRunner(klass);
 					
 				}
 			}
