@@ -43,6 +43,8 @@ package org.flexunit.events
 				} else if ( errorGeneric is ErrorEvent ) {
 					var errorEvent:ErrorEvent = errorGeneric as ErrorEvent;
 					error = new Error( "Top Level Error", Object(errorEvent).errorID );
+				} else {
+					error = new Error("Top Level Error: "+ errorGeneric);
 				}
 			}
 			
