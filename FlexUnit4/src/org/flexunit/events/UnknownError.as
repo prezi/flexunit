@@ -32,6 +32,8 @@ package org.flexunit.events
 	
 	public class UnknownError extends Error
 	{
+		private var originalStackTrace:String;
+
 		public function UnknownError( event:Event )
 		{
 			var error:Error;
@@ -40,6 +42,7 @@ package org.flexunit.events
 				
 				if ( errorGeneric is Error ) {
 					error = errorGeneric as Error;
+					originalStackTrace = error.getStackTrace();
 				} else if ( errorGeneric is ErrorEvent ) {
 					var errorEvent:ErrorEvent = errorGeneric as ErrorEvent;
 					error = new Error( "Top Level Error", Object(errorEvent).errorID );
@@ -49,6 +52,11 @@ package org.flexunit.events
 			}
 			
 			super( error.message, error.errorID );
+		}
+
+		override public function getStackTrace():String
+		{
+			return originalStackTrace ? originalStackTrace : super.getStackTrace();
 		}
 	}
 }
