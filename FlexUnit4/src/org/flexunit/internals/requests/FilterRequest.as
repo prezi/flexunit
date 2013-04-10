@@ -70,10 +70,8 @@ package org.flexunit.internals.requests {
 				filter.apply( runner );
 				return runner;
 			} catch ( error:NoTestsRemainException ) {
-				//TODO: Need to review what exactly is needed here
-				return new ErrorReportingRunner( FilterRequest, 
-					new Error( "No tests found matching " + filter.describe + " from " + request ) );
-								
+				trace("No test remained after " + filter);
+				return runner;								
 			}
 			
 			return null;
